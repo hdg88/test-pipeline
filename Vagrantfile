@@ -71,8 +71,10 @@ Vagrant.configure(2) do |config|
   #   sudo apt-get install -y apache2
 
   # SHELL
+
   config.vm.provision "ansible" do |ansible|
-    ansible.playbook = "ansiblee/playbook.yml"
+    ansible.galaxy_role_file = 'ansiblee/requirements.yml'
+    ansible.playbook = "ansiblee/main.yml"
   end
 
 end

@@ -1,0 +1,10 @@
+---
+- name: build docker containers
+  docker_container:
+    name: "{{ item.name }}"
+    image: "{{ item.image }}"
+    state: started
+  with_items:
+    - { name: web, tag: "web", image: "nginx" }
+    - { name: db, tag: "db", image: "mariadb:latest" }
+    - { name: tools, tag: "tools", image: "ubuntu:16.04" }

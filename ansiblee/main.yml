@@ -1,0 +1,16 @@
+---
+- hosts: all
+  become: yes
+
+
+  pre_tasks:
+    - name: update buntu cache
+      apt: update_cache=yes
+
+  roles:
+    - role: angstwad.docker_ubuntu
+
+
+  tasks:
+    - include: presetup.yml
+    - include: docker-py.yml
