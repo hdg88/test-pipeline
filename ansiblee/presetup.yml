@@ -1,5 +1,4 @@
 ---
-
 - name: install PIP
   apt: name=python-pip state=installed
   become: yes

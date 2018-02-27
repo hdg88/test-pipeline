@@ -1,10 +1,47 @@
 ---
 - name: build docker containers
-  docker_container:
+  docker_image:
     name: "{{ item.name }}"
-    image: "{{ item.image }}"
-    state: started
+    tag: "{{item.tag}}"
+    path: "/vagrant_shared/ansiblee/{{ item.dir }}/"
+    state: present
   with_items:
-    - { name: web, tag: "web", image: "nginx" }
-    - { name: db, tag: "db", image: "mariadb:latest" }
-    - { name: tools, tag: "tools", image: "ubuntu:16.04" }
+    - { name: db, tag: "db", dir: db }
+    - { name: web, tag: "web", dir: web }
+    - { name: tools, tag: "tools", dir: tools }
+
+- name: run mariadb.
+  docker_container:
+    image: ansiblee/db:db
+    name: mariadb
+    state: started
+
+- name: Run nginx.
+  docker_container:
+    image: ansiblee/web:web
+    name: nginx
+    state: started
+    #command: python /opt/www/index.py
+    #ports: "80:80"
+
+- name: Run a MySQL container.
+  docker_container:
+    image: ansiblee/tools:tools
+    name: jenkins
+    state: started
+    #volumes_from: data
+    #command: /opt/start-mysql.sh
+#ports: "3306:3306"
+
+
+# - name: build docker containers
+#   become: yes
+#   docker_image:
+#     name: "{{ item.name }}"
+#     tag: "{{item.tag}}"
+#     path: "test-pipeline/ansiblee/{{ item.dir }}/"
+#     state: present
+#   with_items:
+#     - { name: db, tag: "db", dir: db }
+#     - { name: web, tag: "web", dir: web }
+#     - { name: tools, tag: "tools", dir: tools }
